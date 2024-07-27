@@ -12,19 +12,21 @@ public class Server {
         this.serverSocket = serverSocket;
     }
 
-    public void startServer(){
+    public Socket startServer(){
+        Socket socket = null;
         try{
             while(!serverSocket.isClosed()){
-                Socket socket = serverSocket.accept();
-                System.out.println("A new client has connected!");
-                ClientHandler clientHandler = new ClientHandler(socket);
+                socket = serverSocket.accept();
+//                System.out.println("A new client has connected!");
+//                ClientHandler clientHandler = new ClientHandler(socket);
 
-                Thread thread = new Thread(clientHandler);
-                thread.start();
+//                Thread thread = new Thread(clientHandler);
+//                thread.start();
             }
         }catch (IOException e){
             e.printStackTrace();
         }
+        return socket;
     }
     public void closeServerSocket(){
         try{
@@ -36,10 +38,12 @@ public class Server {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = null;
-        serverSocket = new ServerSocket(1234);
-        Server server = new Server(serverSocket);
-        server.startServer();
-    }
+
+
+//    public static void main(String[] args) throws IOException {
+//        ServerSocket serverSocket = null;
+//        serverSocket = new ServerSocket(1234);
+//        Server server = new Server(serverSocket);
+//        server.startServer();
+//    }
 }

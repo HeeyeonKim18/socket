@@ -19,13 +19,13 @@ public class Player {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private String username;
+    public String username;
     private final AtomicInteger sendCounter = new AtomicInteger();
     private final AtomicInteger receiveCounter = new AtomicInteger();
 
-    public Player(Socket socket, String username){
+    public Player(String username) {
         try{
-            this.socket = socket;
+            this.socket = new Socket("localhost", 1234);
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.username = username;
@@ -35,13 +35,28 @@ public class Player {
         }
     }
 
+    //    public Player(Socket socket, String username){
+//        try{
+//            this.socket = socket;
+//            this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+//            this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//            this.username = username;
+//        }catch(IOException e){
+//            closeEverything(socket, bufferedReader, bufferedWriter);
+//
+//        }
+//    }
+
+    public void startMessage(String message){
+
+    }
+
     public void sendMessage(String message){
         try{
             bufferedWriter.write(username);
             bufferedWriter.newLine();
             bufferedWriter.flush();
 
-//            Scanner scanner = new Scanner(System.in);
             int sendCount = sendCounter.incrementAndGet();
             while(socket.isConnected()){
                 if(sendCount <= 10 && receiveCounter.get() <= 10) {
@@ -92,13 +107,14 @@ public class Player {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your username for the chat: ");
-        String username = scanner.nextLine();
-        Socket socket = new Socket("localhost", 1234);
-        Player player1 = new Player(socket, username);
-        player1.listenForMessage();
-        player1.sendMessage("hey");
-    }
+
+//    public static void main(String[] args) throws IOException {
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.println("Enter your username for the chat: ");
+//        String username = scanner.nextLine();
+//        Socket socket = new Socket("localhost", 1234);
+//        Player player1 = new Player(socket, username);
+//        player1.listenForMessage();
+//        player1.sendMessage("hey");
+//    }
 }

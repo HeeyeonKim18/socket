@@ -3,23 +3,27 @@ package org.example;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientHandler implements Runnable{
 
     public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
+    public static Map<String, Player> members = new ConcurrentHashMap<>();
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String clientUsername;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, Map<String, Player> members) {
         try{
             this.socket = socket;
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.clientUsername = bufferedReader.readLine();
-            clientHandlers.add(this);
-            broadcastMessage("SERVER: " + clientUsername + " has entered the chat!");
+//            clientHandlers.add(this);
+            this.members = members;
+//            broadcastMessage("SERVER: " + members.+ " has entered the chat!");
         }catch(IOException e){
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
