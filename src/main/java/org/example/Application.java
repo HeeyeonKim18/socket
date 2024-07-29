@@ -23,14 +23,21 @@ public class Application {
         BlockingQueue<String> firstToSecond = new ArrayBlockingQueue<>(MAX_MESSAGES_IN_QUEUE);
         BlockingQueue<String> secondToFirst = new ArrayBlockingQueue<>(MAX_MESSAGES_IN_QUEUE);
 
+        // Create two players
         InitiatorPlayer firstPlayer = new InitiatorPlayer(firstToSecond, secondToFirst, initiator, startMessage);
         Player secondPlayer = new Player(secondToFirst, firstToSecond, responder);
 
+        // Even if the second player is called first, it will wait for a value in the queue before proceeding.
         new Thread(secondPlayer).start();
         new Thread(firstPlayer).start();
     }
 
+    /**
+     * Players' names, the starting player, and the message are passed as args.
+     * @param args
+     */
     private static void initChat(String[] args) {
+
         CommandLine commandLine;
         try {
             commandLine = new DefaultParser().parse(options, args);

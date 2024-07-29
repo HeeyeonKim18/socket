@@ -3,6 +3,10 @@ package org.example;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * It handles message exchange by sending and receiving messages through blocking queues,
+ * maintains message counters, and processes messages in a continuous loop.
+ */
 class Player implements Runnable {
     protected final BlockingQueue<String> sent;
     protected final BlockingQueue<String> received;
@@ -51,6 +55,8 @@ class Player implements Runnable {
         } else {
             message += counter.get();
         }
+
+        // stop condition
         if (counter.get() > 10) {
             System.exit(0);
         }

@@ -2,6 +2,10 @@ package org.example;
 
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * The InitiatorPlayer class, which extends the Player class,
+ * sets the initial message and performs the default actions of the Player.
+ */
 class InitiatorPlayer extends Player {
     private final String initMessage;
 
