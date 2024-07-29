@@ -14,8 +14,8 @@ public class MessageTask {
         BlockingQueue<String> secondToFirst = new ArrayBlockingQueue<String>(MAX_MESSAGES_IN_QUEUE);
 
         // Both players use the same queues symmetrically.
-        InitiatorPlayer firstPlayer = new InitiatorPlayer(firstToSecond, secondToFirst);
-        Player secondPlayer = new Player(secondToFirst, firstToSecond);
+        InitiatorPlayer firstPlayer = new InitiatorPlayer(firstToSecond, secondToFirst, "first");
+        Player secondPlayer = new Player(secondToFirst, firstToSecond, "second");
 
         // Please note that we can start threads in reverse order. But thankfully to
         // blocking queues the second player will wait for initialization message from
