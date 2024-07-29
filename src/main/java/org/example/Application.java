@@ -9,6 +9,10 @@ import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * It initializes and manages a messaging system where two players
+ * communicate with each other using blocking queues.
+ */
 public class Application {
 
     private static final int MAX_MESSAGES_IN_QUEUE = 1;
