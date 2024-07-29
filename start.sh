@@ -1,9 +1,2 @@
-#!/bin/sh
-
-# Compile the Java files
-javac Main.java Player.java
-
-# Start the server and client in separate processes
-java Main &
-java Main
+java -jar target/task-1.0-SNAPSHOT-jar-with-dependencies.jar player1,player2 player1 message
 
