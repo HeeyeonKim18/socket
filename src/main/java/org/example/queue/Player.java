@@ -4,42 +4,36 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.System.exit;
+import static org.example.queue.InitiatorPlayer.initiator;
 
-class Player implements Runnable
-{
+class Player implements Runnable {
     protected final BlockingQueue<String> sent;
     protected final BlockingQueue<String> received;
 
     protected static final AtomicInteger counter = new AtomicInteger(1);
-    private final String order;
+    private final String username;
 
-    public Player(BlockingQueue<String> sent, BlockingQueue<String> received, String order)
-    {
+    public Player(BlockingQueue<String> sent, BlockingQueue<String> received, String username) {
         this.sent = sent;
         this.received = received;
-        this.order = order;
+        this.username = username;
     }
 
     @Override
-    public void run()
-    {
-        while (true)
-        {
+    public void run() {
+        while (true) {
             String receivedMessage = receive();
             reply(receivedMessage);
         }
     }
-    protected String receive()
-    {
+
+    protected String receive() {
         String receivedMessage;
-        try
-        {
+        try {
             // Take message from the queue if available or wait otherwise.
             receivedMessage = received.take();
             Thread.sleep(500);
-        }
-        catch (InterruptedException interrupted)
-        {
+        } catch (InterruptedException interrupted) {
             String error = String.format(
                     "Player [%s] failed to receive message on iteration [%d].",
                     this, counter);
@@ -48,24 +42,20 @@ class Player implements Runnable
         return receivedMessage;
     }
 
-    protected void reply(String receivedMessage)
-    {
+    protected void reply(String receivedMessage) {
         String reply = receivedMessage + " ";
         reply = getCounter(reply);
-        try
-        {
+        try {
             // Send message if the queue is not full or wait until one message
             // can fit.
             sent.put(reply);
-            System.out.printf("Player [%s] sent message: %s %n", this, reply);
+            System.out.printf("[%s]: %s %n", username, reply);
 
 
             // All players will work fine without this delay. It placed here just
             // for slowing the console output down.
             Thread.sleep(500);
-        }
-        catch (InterruptedException interrupted)
-        {
+        } catch (InterruptedException interrupted) {
             String error = String.format(
                     "Player [%s] failed to send message [%s] on iteration [%n].",
                     this, reply, counter);
@@ -74,10 +64,10 @@ class Player implements Runnable
     }
 
     private String getCounter(String reply) {
-        if(order.equals("first")) reply += counter.incrementAndGet();
+        if (username.equals(initiator)) reply += counter.incrementAndGet();
         else reply += counter.get();
 
-        if(counter.get() > 10) {
+        if (counter.get() > 10) {
             exit(0);
         }
         return reply;

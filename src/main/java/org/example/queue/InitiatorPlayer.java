@@ -3,10 +3,15 @@ package org.example.queue;
 import java.util.concurrent.BlockingQueue;
 
 class InitiatorPlayer extends Player {
-    private static final String INIT_MESSAGE = "initiator player";
+    private final String initMessage;
+    protected static String initiator;
 
-    public InitiatorPlayer(BlockingQueue<String> sent, BlockingQueue<String> received, String order) {
-        super(sent, received, order);
+    public InitiatorPlayer(BlockingQueue<String> sent, BlockingQueue<String> received,
+                           String initiator, String initMessage) {
+        super(sent, received, initiator);
+        this.initiator = initiator;
+        this.initMessage = initMessage;
+
     }
 
     @Override
@@ -20,13 +25,13 @@ class InitiatorPlayer extends Player {
 
     private void sendInitMessage() {
         try {
-            String message = INIT_MESSAGE + " " + counter.get();
+            String message = initMessage + " " + counter.get();
             sent.put(message);
-            System.out.printf("Player [%s] sent message: %s %n", this, message);
+            System.out.printf("[%s]: %s %n", initiator, message);
         } catch (InterruptedException interrupted) {
             String error = String.format(
                     "Player [%s] failed to sent message [%s].",
-                    this, INIT_MESSAGE);
+                    this, initMessage);
             throw new IllegalStateException(error, interrupted);
         }
     }
